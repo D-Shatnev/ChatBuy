@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Отладка в виртуальном окружении",
+            "type": "debugpy",
+            "request": "launch",
+            "python": "${cwd}/venv/bin/python",
+            "program": "${file}",
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
