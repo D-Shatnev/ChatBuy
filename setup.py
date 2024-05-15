@@ -128,11 +128,12 @@ def parse_requirements(fname="requirements.txt", with_version=True) -> list[str]
 
 
 setuptools.setup(
-    name="AIBazaar",
+    name="ChatBuy",
     version=VERSION,
     description="A project consisting of several AI agents that help the user to make a shopping experience",
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
+    url="https://github.com/D-Shatnev/ChatBuy.git",
     packages=setuptools.find_packages(),
     install_requires=parse_requirements(),
     extras_require={"dev": parse_requirements(fname="requirements-dev.txt")},
