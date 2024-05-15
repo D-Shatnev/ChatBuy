@@ -6,3 +6,8 @@ __pycache__/
 
 # Ignore virtual environment
 venv/
+
+# Ignore browsers drivers
+geckodriver
+chromedriver
+*.chromedriver
