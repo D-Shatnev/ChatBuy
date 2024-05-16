@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from chat_buy.api.constants import LOG_LEVEL
-from chat_buy.api.routers import chat_router
+from chat_buy.api.routers import chat_router, provision_router
 from chat_buy.api.utils import get_logger
 
 logger = get_logger("api", LOG_LEVEL)
@@ -15,6 +15,7 @@ logger = get_logger("api", LOG_LEVEL)
 
 app = FastAPI()
 app.include_router(chat_router)
+app.include_router(provision_router)
 
 app.add_middleware(
     CORSMiddleware,

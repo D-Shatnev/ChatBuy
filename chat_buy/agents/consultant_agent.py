@@ -3,6 +3,7 @@ This module contains the ConsultantAgent class.
 """
 
 from typing import AsyncGenerator
+
 from chat_buy.agents.base_agent import BaseAgent
 
 

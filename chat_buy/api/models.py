@@ -28,3 +28,11 @@ class Message(BaseModel):
 
     role: Roles
     content: str = Field(..., min_length=1, max_length=3000, description="Text of the message.")
+
+
+class Product(BaseModel):
+    """
+    This model represent product from marketplaces.
+    """
+
+    name: str = Field(..., min_length=1, max_length=300, description="Name of the product.")
