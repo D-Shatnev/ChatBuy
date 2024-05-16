@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>ChatBuy - интеллектуальный подбор для любой цели</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="scripts/functions.js"></script>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-box">
+            <div class="messages">
+                <div class="message message-bot">Привет, я ChatBuy бот! Напиши свою задачу, и я попробую сказать, что тебе нужно!</div>          
+            </div>
+            <div class="message-form">
+                <input type="text" id="message-input" placeholder="Введите ваше сообщение..." autocomplete="off">
+                <button id="send_button"><b>Отправить</b></button>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById("send_button").onclick = () => sendMessage();
+        document.getElementById('message-input').addEventListener('keydown', function(event) {
+            if ((event.key === 'Enter' || event.keyCode === 13) && document.getElementById("send_button").disabled == false) {
+                sendMessage()
+            }
+        });
+    </script>
+</body>
+</html>
