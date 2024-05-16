@@ -80,7 +80,7 @@ class WebParser:
             link = self.driver.find_element(By.CSS_SELECTOR, OZON_PRODUCT_CARD_CLASS)
             return link.get_attribute("href")
         except NoSuchElementException:
-            return
+            return None
 
     def close_session(self) -> None:
         """Closes current session."""
@@ -90,8 +90,7 @@ class WebParser:
 
 if __name__ == "__main__":
     parser = WebParser(browser=CHROME)
-    # parser = WebParser(browser=FIREFOX, profile_path="/home/kirill/snap/firefox/common/.mozilla/firefox/f2ntg5ly.default")
-    print(parser.get_ozon_product_link("Чайник"))  # 1 запрос
-    parser.update_session()  # обновили сессию
-    print(parser.get_ozon_product_link("Телескоп"))  # 2 запрос
-    parser.close_session()  # закрыли сессию
+    print(parser.get_ozon_product_link("Чайник"))
+    parser.update_session()
+    print(parser.get_ozon_product_link("Телескоп"))
+    parser.close_session()
