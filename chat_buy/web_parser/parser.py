@@ -131,23 +131,23 @@ class WebParser:
             info["photo"] = None
         return info
 
-    def get_wildberries_product_link(self, query: str) -> str:
+    def get_wildberries_products_links(self, query: str) -> list:
         """
-        Searches for the query product in Wildberries and returns a link to the most popular product.
+        Searches for the query product in Wildberries and returns a links to the most popular products.
 
         Args:
             query (str): product name that puts to search string.
 
         Returns:
-            str|None: URL to most popular product or None if product is not founded.
+            list|None: list of 3 most popular products URL or None if product is not founded.
         """
         if self.driver is None:
             return None
         self.driver.get(f"https://www.wildberries.ru/catalog/0/search.aspx?page=1&sort=rate&search={query}")
         self.driver.implicitly_wait(2)
         try:
-            link = self.driver.find_element(By.CSS_SELECTOR, WILDBERRIES_PRODUCT_CARD_CLASS)
-            return link.get_attribute("href")
+            links = self.driver.find_elements(By.CSS_SELECTOR, WILDBERRIES_PRODUCT_CARD_CLASS)[:3]
+            return [link.get_attribute("href") for link in links]
         except NoSuchElementException:
             return None
 
@@ -184,9 +184,3 @@ class WebParser:
         """Closes current session."""
         if self.driver is not None:
             self.driver.quit()
-
-
-if __name__ == "__main__":
-    parser = WebParser(browser=CHROME)
-    url = parser.get_wildberries_product_link("Чайник")
-    print(parser.get_wildberries_product_info(url))

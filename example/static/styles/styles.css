@@ -91,3 +91,34 @@ button {
 button:hover {
     background-color:  #02a79e;;
 }
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+.accordion-button::after {
+    content: '▼'; /* Символ V */
+    font-size: 16px;
+}
+
+.card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    display: inline-block; /* Или flex, в зависимости от вашего дизайна */
+}
+
+.card img {
+    width: 100px; /* Или другой размер, подходящий для вашего дизайна */
+    height: auto;
+}
+
+.card h3 {
+    margin: 5px 0;
+}
+
+.card p {
+    color: #555;
+}

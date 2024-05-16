@@ -1,3 +1,26 @@
+function setupEventHandlers() {
+    const sendButton = document.getElementById("send_button");
+    const messageInput = document.getElementById('message-input');
+
+    if (sendButton) {
+        sendButton.onclick = () => sendMessage();
+    }
+
+    if (messageInput) {
+        messageInput.addEventListener('keydown', function(event) {
+            if ((event.key === 'Enter' || event.keyCode === 13) && !sendButton.disabled) {
+                sendMessage();
+            }
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    setupEventHandlers();
+});
+
+setupEventHandlers()
+
 async function sendMessage() {
     /***
      * handle for send-message button
@@ -25,7 +48,8 @@ async function sendMessage() {
     try {
         messages = get_dialog_history();
         //Query to API
-        const response = await fetch('http://192.168.169.101:15555/v1/chat/',{
+        //const response = await fetch('http://192.168.169.101:15555/v1/chat/',{
+        const response = await fetch('http://127.0.0.1:5000/v1/chat/',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -39,7 +63,7 @@ async function sendMessage() {
         if (response.ok) {
             const reader = response.body.getReader();
             const decoder = new TextDecoder('utf-8');
-            let full_message = "" 
+            let products = [] 
 
             while (true) {
                 const { done, value } = await reader.read();
@@ -49,16 +73,17 @@ async function sendMessage() {
                     update_bot_message_div(chunk);
                 }
                 else if (response.headers.get("response-agent") == "SearchQueryAgent"){
-                    full_message+=decoder.decode(value);
+                    products.push(decoder.decode(value));
                 }
             }
             if (response.headers.get("response-agent") == "SearchQueryAgent"){
-                send_products_message(full_message);
+                send_products_message(products);
             }
         } else {
             update_bot_message_div("Возникла ошибка. Перезагрузите страницу или попробуйте позже.");
         }
     } catch (error) {
+        console.log(error)
         update_bot_message_div("Ошибка соединения. Попробуйте позже.");
     } finally {
         button.disabled = false;
@@ -78,15 +103,49 @@ function update_bot_message_div(chunk){
     document.getElementsByClassName("messages")[0].scrollTop = document.getElementsByClassName("messages")[0].scrollHeight;
 }
 
-function send_products_message(message){
-    /***
-     * Updates last bot message with information about products.
-     * 
-     * Args:
-     *      message (String): contains products information 
-    ***/
+function send_products_message(products) {
     let elements = document.getElementsByClassName('message message-bot');
-    elements[elements.length - 1].innerHTML = message;
+    let container = elements[elements.length - 1];
+    let newInnerHTML = "Я смог кое-что подобрать:<br>";
+
+    let promises = [];
+    products.forEach((product) => {
+    
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({name: product})
+        };
+    
+        const promise = fetch("http://127.0.0.1:5000/v1/provision/", requestOptions)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                newInnerHTML += "* " + product + ":<br>";
+                newInnerHTML += `<a href="${data.link1}">Ссылка 1</a><br>`;
+                newInnerHTML += `<a href="${data.link2}">Ссылка 2</a><br>`;
+                newInnerHTML += `<a href="${data.link3}">Ссылка 3</a><br>`;
+            });
+        
+        promises.push(promise);
+    });
+
+    // Дожидаемся завершения всех промисов
+    Promise.all(promises).then(() => {
+        // Обновляем HTML только после выполнения всех запросов
+        container.innerHTML = newInnerHTML;
+        document.getElementsByClassName("messages")[0].scrollTop = document.getElementsByClassName("messages")[0].scrollHeight;
+    }).catch(error => {
+        console.error('Error:', error);
+    });
+
     document.getElementsByClassName("messages")[0].scrollTop = document.getElementsByClassName("messages")[0].scrollHeight;
 }
 
