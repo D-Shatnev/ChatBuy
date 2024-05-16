@@ -7,7 +7,7 @@ from typing import List
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 
-from chat_buy.agents import consultant_agent, dialog_control_agent
+from chat_buy.agents import consultant_agent, dialog_control_agent, search_query_agent
 from chat_buy.agents.models import DialogStatus
 from chat_buy.api.models import Message
 
@@ -28,7 +28,8 @@ async def process_messages(messages: List[Message]) -> StreamingResponse:
             response_agent_name = consultant_agent.__class__.__name__
             action = consultant_agent.advise_user
         case DialogStatus.OFFER:
-            pass
+            response_agent_name = search_query_agent.__class__.__name__
+            action = search_query_agent.offer_products
 
     return StreamingResponse(
         action(messages),

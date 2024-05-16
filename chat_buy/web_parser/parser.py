@@ -12,7 +12,14 @@ from selenium.webdriver.firefox.service import Service as FService
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 
-from chat_buy.web_parser.constants import CHROME, FIREFOX, OZON_PRODUCT_CARD_CLASS, OZON_PRODUCT_NAME_CLASS, OZON_PRODUCT_PHOTO_CLASS, OZON_PRODUCT_PRICE_CLASS
+from chat_buy.web_parser.constants import (
+    CHROME,
+    FIREFOX,
+    OZON_PRODUCT_CARD_CLASS,
+    OZON_PRODUCT_NAME_CLASS,
+    OZON_PRODUCT_PHOTO_CLASS,
+    OZON_PRODUCT_PRICE_CLASS,
+)
 
 
 class WebParser:
