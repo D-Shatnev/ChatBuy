@@ -23,7 +23,7 @@ class OpenAIClient:
 
     async def get_stream_response(
         self, model: str, temperature: float, context_messages: list
-    ) -> AsyncGenerator[str, None, None]:
+    ) -> AsyncGenerator[str, None]:
         """
         Asynchronously retrieves a response from a chat stream.
 
