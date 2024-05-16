@@ -13,15 +13,15 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 
 from chat_buy.web_parser.constants import (
-    CHROME, 
-    FIREFOX, 
-    OZON_PRODUCT_CARD_CLASS, 
-    OZON_PRODUCT_NAME_CLASS, 
-    OZON_PRODUCT_PHOTO_CLASS, 
+    CHROME,
+    FIREFOX,
+    OZON_PRODUCT_CARD_CLASS,
+    OZON_PRODUCT_NAME_CLASS,
+    OZON_PRODUCT_PHOTO_CLASS,
     OZON_PRODUCT_PRICE_CLASS,
-    WILDBERRIES_PRODUCT_CARD_CLASS, 
-    WILDBERRIES_PRODUCT_NAME_CLASS, 
-    WILDBERRIES_PRODUCT_PRICE_CLASS
+    WILDBERRIES_PRODUCT_CARD_CLASS,
+    WILDBERRIES_PRODUCT_NAME_CLASS,
+    WILDBERRIES_PRODUCT_PRICE_CLASS,
 )
 
 
@@ -131,7 +131,7 @@ class WebParser:
             info["photo"] = None
         return info
 
-    def get_wildberries_product_link(self, query:str) -> str:
+    def get_wildberries_product_link(self, query: str) -> str:
         """
         Searches for the query product in Wildberries and returns a link to the most popular product.
 
@@ -150,7 +150,7 @@ class WebParser:
             return link.get_attribute("href")
         except NoSuchElementException:
             return None
-        
+
     def get_wildberries_product_info(self, url: str) -> dict:
         """
         Returns dictionary with information about product from Wildberries.
