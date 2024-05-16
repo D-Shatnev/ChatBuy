@@ -3,7 +3,7 @@
 ## Установка
 
 ```bash
-git clone https://github.com/D-Shatnev/AIBazaar.git
+git clone https://github.com/D-Shatnev/ChatBuy.git
 python3.10 -m venv venv
 source venv/bin/activate
 python -m pip install --upgrade pip
