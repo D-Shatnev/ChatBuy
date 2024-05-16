@@ -6,7 +6,7 @@ profile = "black"
 
 [tool.flake8]
 max-line-length = 120
-ignore = "E203"
+ignore = "E203", "R0903"
 
 [tool.pylint]
 max-line-length = 120
