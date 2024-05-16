@@ -39,13 +39,21 @@ async function sendMessage() {
         if (response.ok) {
             const reader = response.body.getReader();
             const decoder = new TextDecoder('utf-8');
+            let full_message = "" 
 
             while (true) {
                 const { done, value } = await reader.read();
                 if (done) break;
-
-                const chunk = decoder.decode(value);
-                update_bot_message_div(chunk);
+                if (response.headers.get("response-agent") == "ConsultantAgent"){
+                    const chunk = decoder.decode(value);
+                    update_bot_message_div(chunk);
+                }
+                else if (response.headers.get("response-agent") == "SearchQueryAgent"){
+                    full_message+=decoder.decode(value);
+                }
+            }
+            if (response.headers.get("response-agent") == "SearchQueryAgent"){
+                send_products_message(full_message);
             }
         } else {
             update_bot_message_div("Возникла ошибка. Перезагрузите страницу или попробуйте позже.");
@@ -67,6 +75,18 @@ function update_bot_message_div(chunk){
     ***/
     let elements = document.getElementsByClassName('message message-bot');
     elements[elements.length - 1].innerHTML += chunk;
+    document.getElementsByClassName("messages")[0].scrollTop = document.getElementsByClassName("messages")[0].scrollHeight;
+}
+
+function send_products_message(message){
+    /***
+     * Updates last bot message with information about products.
+     * 
+     * Args:
+     *      message (String): contains products information 
+    ***/
+    let elements = document.getElementsByClassName('message message-bot');
+    elements[elements.length - 1].innerHTML = message;
     document.getElementsByClassName("messages")[0].scrollTop = document.getElementsByClassName("messages")[0].scrollHeight;
 }
 
