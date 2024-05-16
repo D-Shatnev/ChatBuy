@@ -12,7 +12,7 @@ from selenium.webdriver.firefox.service import Service as FService
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 
-from chat_buy.web_parser.constants import CHROME, FIREFOX, OZON_PRODUCT_CARD_CLASS
+from chat_buy.web_parser.constants import CHROME, FIREFOX, OZON_PRODUCT_CARD_CLASS, OZON_PRODUCT_NAME_CLASS, OZON_PRODUCT_PHOTO_CLASS, OZON_PRODUCT_PRICE_CLASS
 
 
 class WebParser:
@@ -81,6 +81,45 @@ class WebParser:
             return link.get_attribute("href")
         except NoSuchElementException:
             return None
+
+    def get_ozon_product_info(self, url: str) -> dict:
+        """
+        Returns dictionary with information about product.
+
+        Args:
+            url (str): URL to product in OZON.
+
+        Returns:
+            dict: dictionary with keys: link, name, price, photo.
+        """
+        if self.driver is None:
+            return None
+        self.driver.get(url)
+        info = {"link": url}
+        self.driver.implicitly_wait(2)
+        try:
+            name = self.driver.find_element(By.CSS_SELECTOR, OZON_PRODUCT_NAME_CLASS)
+            info["name"] = name.text
+        except NoSuchElementException:
+            print("name не найдено")
+            info["name"] = None
+
+        self.driver.implicitly_wait(2)
+        try:
+            price = self.driver.find_element(By.CSS_SELECTOR, OZON_PRODUCT_PRICE_CLASS)
+            info["price"] = price.text
+        except NoSuchElementException:
+            print("price не найдено")
+            info["price"] = None
+
+        self.driver.implicitly_wait(2)
+        try:
+            photo = self.driver.find_element(By.CSS_SELECTOR, OZON_PRODUCT_PHOTO_CLASS)
+            info["photo"] = photo.get_attribute("src")
+        except NoSuchElementException:
+            print("photo не найдено")
+            info["photo"] = None
+        return info
 
     def close_session(self) -> None:
         """Closes current session."""
