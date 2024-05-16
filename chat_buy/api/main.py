@@ -4,6 +4,7 @@ This module contains the main FastAPI application.
 
 import uvicorn
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from chat_buy.api.constants import LOG_LEVEL
 from chat_buy.api.routers import chat_router
@@ -13,6 +14,15 @@ logger = get_logger("api", LOG_LEVEL)
 
 
 app = FastAPI()
+app.include_router(chat_router)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 def run_api(host: str = "localhost", port: int = 8000, reload: bool = True) -> None:
     """

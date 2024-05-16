@@ -3,6 +3,7 @@ This module contains the client for the OpenAI API.
 """
 
 from typing import AsyncGenerator
+
 import openai
 
 from chat_buy.api.constants import LOG_LEVEL
@@ -46,8 +47,7 @@ class OpenAIClient:
             async for response_item in response_generator:
                 delta = response_item.choices[0].delta
                 if "content" in delta:
-                    response += delta.content
-                    yield response
+                    yield delta.content
         except Exception as error:
             yield str(error)
             return

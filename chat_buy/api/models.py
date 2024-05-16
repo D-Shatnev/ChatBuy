@@ -28,4 +28,3 @@ class Message(BaseModel):
 
     role: Roles
     content: str = Field(..., min_length=1, max_length=3000, description="Text of the message.")
-
