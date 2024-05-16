@@ -11,3 +11,6 @@ venv/
 geckodriver
 chromedriver
 *.chromedriver
+
+# Ignore logs files
+*.log
