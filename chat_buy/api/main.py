@@ -6,6 +6,7 @@ import uvicorn
 from fastapi import FastAPI
 
 from chat_buy.api.constants import LOG_LEVEL
+from chat_buy.api.routers import chat_router
 from chat_buy.api.utils import get_logger
 
 logger = get_logger("api", LOG_LEVEL)
