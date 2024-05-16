@@ -32,4 +32,4 @@ class DialogControlAgent(BaseAgent):
             if "<start_search> " in part.lower():
                 return DialogStatus.OFFER
         full_response = "".join(full_response)
-        return DialogStatus.OFFER if "<start_search> " in full_response.lower() else DialogStatus.DIALOG
+        return DialogStatus.OFFER if "<start_search>" in full_response.lower() else DialogStatus.DIALOG
