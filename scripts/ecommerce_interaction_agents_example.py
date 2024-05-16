@@ -1,5 +1,6 @@
 import asyncio
 import json
+
 import openai
 
 # Загрузка промптов из файла
@@ -7,20 +8,19 @@ with open("data/agent_prompts.json", "r", encoding="utf-8") as file:
     agent_prompts = json.load(file)
 
 # Захардкоженный API ключ (пример, не используйте этот ключ)
-api_key = 'секрет'
-api_base = 'секрет'
+api_key = "секрет"
+api_base = "секрет"
 
 # Установка API ключа для клиента OpenAI
 openai.api_key = api_key
 openai.api_base = api_base
 
+
 # Функция для асинхронной отправки сообщений и получения ответов от модели
 async def chat_with_model_async(model, messages):
-    response = await openai.ChatCompletion.acreate(
-        model=model,
-        messages=messages
-    )
+    response = await openai.ChatCompletion.acreate(model=model, messages=messages)
     return response["choices"][0]["message"]["content"]
+
 
 # Асинхронная функция для обработки диалога
 async def handle_dialogue(messages):
@@ -38,7 +38,7 @@ async def handle_dialogue(messages):
     control_response, search_response, consultant_response = await asyncio.gather(
         chat_with_model_async("gpt-4-turbo", control_messages),
         chat_with_model_async("gpt-4-turbo", search_messages),
-        chat_with_model_async("gpt-4-turbo", consultant_messages)
+        chat_with_model_async("gpt-4-turbo", consultant_messages),
     )
 
     # Обработка ответа от DialogueControlAgent
@@ -51,16 +51,19 @@ async def handle_dialogue(messages):
     else:
         print("Ошибка: неизвестная команда от DialogueControlAgent.")
 
+
 # Запуск асинхронного диалога
 async def main():
     # Начальное сообщение системы
-    messages = [{}]
+    messages = [{"role": "system", "content": agent_prompts["ConsultantAgent"]["prompt"]}]
 
-    print("Добро пожаловать в чат с консультантом! Чего бы вы хотели сделать или купить? Напишите 'выход' для завершения диалога.")
-    
+    print(
+        "Добро пожаловать в чат с консультантом! Чего бы вы хотели сделать или купить? Напишите 'выход' для завершения диалога."
+    )
+
     while True:
         user_input = input("Вы: ")
-        if user_input.lower() == 'выход':
+        if user_input.lower() == "выход":
             print("Диалог завершен.")
             break
 
@@ -69,6 +72,7 @@ async def main():
 
         # Обработка диалога
         await handle_dialogue(messages)
+
 
 # Запуск асинхронного цикла событий
 if __name__ == "__main__":
