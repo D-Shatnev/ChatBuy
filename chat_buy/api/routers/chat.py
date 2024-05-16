@@ -7,9 +7,9 @@ from typing import List
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 
+from chat_buy.agents import consultant_agent, dialog_control_agent
+from chat_buy.agents.models import DialogStatus
 from chat_buy.api.models import Message
-from chat_buy.constants import API_BASE, API_KEY
-from chat_buy.openai.openai_client import OpenAIClient
 
 chat_router = APIRouter()
 
@@ -19,9 +19,19 @@ async def process_messages(messages: List[Message]) -> StreamingResponse:
     """
     Processes a list of messages and streams back a response.
     """
+    action = None
+    response_agent_name = None
+    messages = [message.model_dump() for message in messages]
+
+    match await dialog_control_agent.check_dialog_or_offer(messages):
+        case DialogStatus.DIALOG:
+            response_agent_name = consultant_agent.__class__.__name__
+            action = consultant_agent.advise_user
+        case DialogStatus.OFFER:
+            pass
+
     return StreamingResponse(
-        OpenAIClient(api_base=API_BASE, api_key=API_KEY).get_stream_response(
-            model="gpt-3.5-turbo", temperature=0.7, context_messages=[message.model_dump() for message in messages]
-        ),
+        action(messages),
         media_type="text/event-stream",
+        headers={"Response-Agent": response_agent_name},
     )
