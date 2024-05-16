@@ -2,6 +2,7 @@
 This module contains the SearchQueryAgent class.
 """
 
+import asyncio
 import re
 from typing import AsyncGenerator
 
@@ -57,6 +58,7 @@ class SearchQueryAgent(BaseAgent):
         full_response = "".join(full_response)
         products = self._parse_neuroweb_answer(full_response)
         for product in products:
+            await asyncio.sleep(0.1)
             yield product
 
     def get_information_about_product(self, product: str) -> dict:
