@@ -56,7 +56,7 @@ class WebParser:
 
         self.driver = webdriver.Firefox(service=service, options=options)
 
-    def get_ozon_product_link(self, query: str) -> str | None:
+    def get_ozon_products_links(self, query: str) -> list | None:
         """
         Searches for the query product in Ozon and returns a link to the most popular product.
 
@@ -87,10 +87,11 @@ class WebParser:
         self.driver.get(url_with_rating_sorting)
         self.driver.implicitly_wait(2)
         try:
-            link = self.driver.find_element(By.CSS_SELECTOR, OZON_PRODUCT_CARD_CLASS)
-            return link.get_attribute("href")
+            links = self.driver.find_elements(By.CSS_SELECTOR, WILDBERRIES_PRODUCT_CARD_CLASS)[:3]
+            return [link.get_attribute("href") for link in links]
         except NoSuchElementException:
             return None
+
 
     def get_ozon_product_info(self, url: str) -> dict:
         """

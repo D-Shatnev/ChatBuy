@@ -49,7 +49,7 @@ async function sendMessage() {
         messages = get_dialog_history();
         //Query to API
         //const response = await fetch('http://192.168.169.101:15555/v1/chat/',{
-        const response = await fetch('http://127.0.0.1:5000/v1/chat/',{
+        const response = await fetch('http://127.0.0.1:8000/v1/chat/',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -68,15 +68,16 @@ async function sendMessage() {
             while (true) {
                 const { done, value } = await reader.read();
                 if (done) break;
-                if (response.headers.get("response-agent") == "ConsultantAgent"){
+                console.log(response.headers)
+                if (response.headers.get("Response-Agent") == "ConsultantAgent"){
                     const chunk = decoder.decode(value);
                     update_bot_message_div(chunk);
                 }
-                else if (response.headers.get("response-agent") == "SearchQueryAgent"){
+                else if (response.headers.get("Response-Agent") == "SearchQueryAgent"){
                     products.push(decoder.decode(value));
                 }
             }
-            if (response.headers.get("response-agent") == "SearchQueryAgent"){
+            if (response.headers.get("Response-Agent") == "SearchQueryAgent"){
                 send_products_message(products);
             }
         } else {
@@ -98,6 +99,7 @@ function update_bot_message_div(chunk){
      * Args:
      *      chunk (String): chunk to add to end of the last bot message. 
     ***/
+   console.log("lol");
     let elements = document.getElementsByClassName('message message-bot');
     elements[elements.length - 1].innerHTML += chunk;
     document.getElementsByClassName("messages")[0].scrollTop = document.getElementsByClassName("messages")[0].scrollHeight;
@@ -120,7 +122,7 @@ function send_products_message(products) {
             body: JSON.stringify({name: product})
         };
     
-        const promise = fetch("http://127.0.0.1:5000/v1/provision/", requestOptions)
+        const promise = fetch("http://127.0.0.1:8000/v1/provision/", requestOptions)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);
