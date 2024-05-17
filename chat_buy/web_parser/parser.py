@@ -95,7 +95,6 @@ class WebParser:
         except NoSuchElementException:
             return None
 
-
     def get_ozon_product_info(self, url: str) -> dict:
         """
         Returns dictionary with information about product.
@@ -188,6 +187,7 @@ class WebParser:
         """Closes current session."""
         if self.driver is not None:
             self.driver.quit()
+
 
 if __name__ == "__main__":
     parser = WebParser(browser=CHROME)

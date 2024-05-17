@@ -17,15 +17,16 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], 
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-    expose_headers=["response-agent"]
+    expose_headers=["response-agent"],
 )
 
 app.include_router(chat_router)
 app.include_router(provision_router)
+
 
 def run_api(host: str = "localhost", port: int = 8000, reload: bool = True) -> None:
     """
