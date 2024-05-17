@@ -72,5 +72,12 @@ class SearchQueryAgent(BaseAgent):
             dict: dictionary with keys: link, name, price, photo.
         """
         urls = self.parser.get_wildberries_products_links(product)
-        info = {"link1": urls[0], "link2": urls[1], "link3": urls[2]}
+        if len(urls) == 3:
+            info = {"link1": urls[0], "link2": urls[1], "link3": urls[2]}
+        elif len(urls) == 2:
+            info = {"link1": urls[0], "link2": urls[1]}
+        elif len(urls) == 1:
+            info = {"link1": urls[0]}
+        else:
+            info = {}
         return info

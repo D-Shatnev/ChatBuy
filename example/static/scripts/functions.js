@@ -35,7 +35,7 @@ async function sendMessage() {
     button.style.backgroundColor = 'gray';
     button.disabled = true;
 
-    const timeout = 10000;
+    const timeout = 30000;
 
     const handleTimeout = () => {
         update_bot_message_div("Нет ответа от сервера. Попробуйте позже.");
@@ -129,9 +129,9 @@ function send_products_message(products) {
             })
             .then(data => {
                 newInnerHTML += "* " + product + ":<br>";
-                newInnerHTML += `<a href="${data.link1}">Ссылка 1</a><br>`;
-                newInnerHTML += `<a href="${data.link2}">Ссылка 2</a><br>`;
-                newInnerHTML += `<a href="${data.link3}">Ссылка 3</a><br>`;
+                if (data.link1) newInnerHTML += `<a href="${data.link1}">Ссылка 1</a><br>`;
+                if (data.link2) newInnerHTML += `<a href="${data.link2}">Ссылка 2</a><br>`;
+                if (data.link3) newInnerHTML += `<a href="${data.link3}">Ссылка 3</a><br>`;
             });
         
         promises.push(promise);
