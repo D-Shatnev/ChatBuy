@@ -84,10 +84,13 @@ class WebParser:
                 parsed_url.fragment,
             )
         )
-        self.driver.get(url_with_rating_sorting)
+        try:
+            self.driver.get(url_with_rating_sorting)
+        except:
+            pass
         self.driver.implicitly_wait(2)
         try:
-            links = self.driver.find_elements(By.CSS_SELECTOR, WILDBERRIES_PRODUCT_CARD_CLASS)[:3]
+            links = self.driver.find_elements(By.CSS_SELECTOR, OZON_PRODUCT_CARD_CLASS)[:3]
             return [link.get_attribute("href") for link in links]
         except NoSuchElementException:
             return None
@@ -185,3 +188,9 @@ class WebParser:
         """Closes current session."""
         if self.driver is not None:
             self.driver.quit()
+
+if __name__ == "__main__":
+    parser = WebParser(browser=CHROME)
+    print(parser.get_ozon_products_links("масляная краска"))
+    parser.update_session()
+    print(parser.get_ozon_products_links("масляная краска"))

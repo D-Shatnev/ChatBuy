@@ -68,7 +68,6 @@ async function sendMessage() {
             while (true) {
                 const { done, value } = await reader.read();
                 if (done) break;
-                console.log(response.headers)
                 if (response.headers.get("Response-Agent") == "ConsultantAgent"){
                     const chunk = decoder.decode(value);
                     update_bot_message_div(chunk);
@@ -99,7 +98,6 @@ function update_bot_message_div(chunk){
      * Args:
      *      chunk (String): chunk to add to end of the last bot message. 
     ***/
-   console.log("lol");
     let elements = document.getElementsByClassName('message message-bot');
     elements[elements.length - 1].innerHTML += chunk;
     document.getElementsByClassName("messages")[0].scrollTop = document.getElementsByClassName("messages")[0].scrollHeight;

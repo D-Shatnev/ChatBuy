@@ -71,6 +71,6 @@ class SearchQueryAgent(BaseAgent):
         Returns:
             dict: dictionary with keys: link, name, price, photo.
         """
-        urls = self.parser.get_ozon_products_links(product)
+        urls = self.parser.get_wildberries_products_links(product)
         info = {"link1": urls[0], "link2": urls[1], "link3": urls[2]}
         return info

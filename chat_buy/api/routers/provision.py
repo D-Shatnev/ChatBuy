@@ -11,7 +11,7 @@ provision_router = APIRouter()
 
 
 @provision_router.post("/v1/provision/")
-async def process_provision(product: Product) -> dict:
+def process_provision(product: Product) -> dict:
     """
     Searches for product information on marketplaces and returns results to the user.
     Returns dictionary with keys: link, name, price, photo.
