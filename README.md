@@ -1,4 +1,6 @@
 # ChatBuy
+This project was developed as part of the "AI in e-commerce" hackathon. 
+It represents an initial study of the work of the agent-based system of marketplaces consultants.
 
 ## Установка
 
